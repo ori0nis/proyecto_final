@@ -1,6 +1,11 @@
+import com.garmin.fit.DateTime;
+import com.garmin.fit.Sport;
+
 import java.util.List;
 
 public class TrainingSession {
+    Sport sport;
+    DateTime startTime;
     Float totalDistance;
     Float totalTime;
     Short averageHeartRate;
@@ -12,32 +17,40 @@ public class TrainingSession {
     Integer watts20min;
     float avgTimePer100m;
     float avgTimePerKm;
-    List<LapData> lapData;
+    List<LapData> lapDataList;
+
+    public TrainingSession(){}
 
     // Swim
-    public TrainingSession(Float totalDistance, Float totalTime, float avgTimePer100m, Short averageHeartRate,
+    public TrainingSession(Sport sport, DateTime startTime, Float totalDistance, Float totalTime, float avgTimePer100m, Short averageHeartRate,
                            Short maxHeartRate, Integer totalCalories, Float maxSpeed, Float avgSpeed,
-                           Integer avgWatts, Integer watts20min, List<LapData> lapData){
-        this.totalDistance = totalDistance;
+                           Integer avgWatts, Integer watts20min, List<LapData> lapDataList){
+
+        this.sport = sport;
+        this.startTime = startTime;
+        this.totalDistance = totalDistance != null ? totalDistance : 0;
         this.totalTime = totalTime;
         this.avgTimePer100m = avgTimePer100m;
         this.averageHeartRate = averageHeartRate;
         this.maxHeartRate = maxHeartRate;
         this.totalCalories = totalCalories;
-        this.lapData = lapData;
+        this.lapDataList = lapDataList;
 
         // Initializing to avoid null errors:
         this.maxSpeed = maxSpeed != null ? maxSpeed : 0.0f;
         this.avgSpeed = avgSpeed != null ? avgSpeed : 0.0f;
-        this.avgWatts = avgWatts != null? avgWatts : 0;
-        this.watts20min = watts20min != null? watts20min : 0;
+        this.avgWatts = avgWatts != null ? avgWatts : 0;
+        this.watts20min = watts20min != null ? watts20min : 0;
     }
 
     // Bike
-    public TrainingSession(Float totalDistance, Float totalTime, Float maxSpeed, Float avgSpeed, Integer avgWatts,
+    public TrainingSession(Sport sport, DateTime startTime, Float totalDistance, Float totalTime, Float maxSpeed, Float avgSpeed, Integer avgWatts,
                            Integer watts20min, Short averageHeartRate, Short maxHeartRate, Integer totalCalories,
-                           List<LapData> lapData){
-        this.totalDistance = totalDistance;
+                           List<LapData> lapDataList){
+
+        this.sport = sport;
+        this.startTime = startTime;
+        this.totalDistance = totalDistance != null ? totalDistance : 0;
         this.totalTime = totalTime;
         this.maxSpeed = maxSpeed;
         this.avgSpeed = avgSpeed;
@@ -46,20 +59,24 @@ public class TrainingSession {
         this.averageHeartRate = averageHeartRate;
         this.maxHeartRate = maxHeartRate;
         this.totalCalories = totalCalories;
-        this.lapData = lapData;
+        this.lapDataList = lapDataList;
     }
 
     // Run
-    public TrainingSession(Float totalDistance, Float totalTime, Short averageHeartRate,
+    public TrainingSession(Sport sport, DateTime startTime, Float totalDistance, Float totalTime, Short averageHeartRate,
                            Short maxHeartRate, Integer totalCalories, float avgTimePerKm, Float maxSpeed,
-                           Float avgSpeed, Integer avgWatts, Integer watts20min, List<LapData> lapData){
-        this.totalDistance = totalDistance;
+                           Float avgSpeed, Integer avgWatts, Integer watts20min, List<LapData> lapDataList){
+
+        this.sport = sport;
+        this.startTime = startTime;
+        this.totalDistance = totalDistance != null ? totalDistance : 0;
         this.totalTime = totalTime;
         this.averageHeartRate = averageHeartRate;
         this.maxHeartRate = maxHeartRate;
         this.totalCalories = totalCalories;
         this.avgTimePerKm = avgTimePerKm;
-        this.lapData = lapData;
+        this.lapDataList = lapDataList;
+
         // Initializing to avoid null errors:
         this.maxSpeed = maxSpeed != null ? maxSpeed : 0.0f;
         this.avgSpeed = avgSpeed != null ? avgSpeed : 0.0f;
@@ -68,15 +85,40 @@ public class TrainingSession {
     }
 
     // Strength
-    public TrainingSession(Float totalTime, Short averageHeartRate, Short maxHeartRate, Integer totalCalories ) {
+    public TrainingSession(Sport sport, DateTime startTime, Float totalTime, Short averageHeartRate, Short maxHeartRate, Integer totalCalories,
+                           Float totalDistance) {
+
+        this.sport = sport;
+        this.startTime = startTime;
         this.totalTime = totalTime;
         this.averageHeartRate = averageHeartRate;
         this.maxHeartRate = maxHeartRate;
         this.totalCalories = totalCalories;
+        this.totalDistance = totalDistance != null ? totalDistance : 0;
     }
 
     public Float getTotalDistance() {
-        return totalDistance;
+        if(totalDistance != null){
+            return totalDistance;
+        } else {
+            return null;
+        }
+    }
+
+    public DateTime getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(DateTime startTime) {
+        this.startTime = startTime;
+    }
+
+    public Sport getSport() {
+        return sport;
+    }
+
+    public void setSport(Sport sport) {
+        this.sport = sport;
     }
 
     public void setTotalDistance(Float totalDistance) {
@@ -155,17 +197,31 @@ public class TrainingSession {
         this.avgTimePerKm = avgTimePerKm;
     }
 
-    public Float getAvgTimePer100m() {
-        return ((totalTime / 60) / totalDistance) * 100;
+    public float getAvgTimePer100m() {
+        if(totalTime != null){
+            return ((totalTime / 60) / totalDistance) * 100;
+        } else {
+            return 0;
+        }
     }
 
     public void setAvgTimePer100m(Float avgTimePer100m) {
         this.avgTimePer100m = avgTimePer100m;
     }
 
+    public List<LapData> getLapDataList() {
+        return lapDataList;
+    }
+
+    public void setLapDataList(List<LapData> lapDataList) {
+        this.lapDataList = lapDataList;
+    }
+
     @Override
     public String toString() {
         return "TrainingSession{" +
+                "sportType=" + sport +
+                "startTime=" + startTime +
                 "totalDistance=" + totalDistance + "m" +
                 ", totalTime=" + FitParser.formatTotalTime(totalTime) + " minutes" +
                 ", averageTimePer100m=" + FitParser.formatTimePer100m(avgTimePer100m) + " min/100m" +
@@ -177,7 +233,7 @@ public class TrainingSession {
                 ", avgSpeed=" + (avgSpeed != null ? String.format("%.2f", avgSpeed * 3.6) : "N/A") + " km/h" +
                 ", avgWatts=" + avgWatts +
                 ", watts20min=" + watts20min +
-                ", lapData=" + lapData +
+                ", lapData=" + lapDataList +
                 '}';
     }
 }

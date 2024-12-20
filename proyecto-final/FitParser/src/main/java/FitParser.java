@@ -1,5 +1,4 @@
 import com.garmin.fit.*;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -9,52 +8,58 @@ import java.util.List;
 public class FitParser {
 
     public static void main(String[] args) {
-        String filePath = "C:\\Users\\user\\Documents\\Coding projects\\proyecto-final\\RunGap files\\RunGap\\export";
-        File folder = new File(filePath);
-        File[] fitFiles = folder.listFiles((dir, name) -> name.toLowerCase().endsWith(".fit"));
-
-        for (File fitFile : fitFiles) {
-            try (FileInputStream inputStream = new FileInputStream(fitFile)) {
-                Decode decode = new Decode();
-                MesgBroadcaster broadcaster = new MesgBroadcaster(decode);
-
-                broadcaster.addListener((SessionMesgListener) sessionMesg -> {
-                    Sport sport = sessionMesg.getSport();
-                    System.out.println("Detected Sport: " + sport);
-
-                    DateTime startTime = sessionMesg.getStartTime();
-                    System.out.println("Date and time: " + startTime);
-
-                    if (sport == Sport.SWIMMING) {
-                        handleSwimming(sessionMesg);
-                    } else if (sport == Sport.CYCLING) {
-                        handleCycling(sessionMesg);
-                    } else if (sport == Sport.RUNNING) {
-                        handleRunning(sessionMesg);
-                    } else if (sport == Sport.TRAINING) {
-                        handleStrengthTraining(sessionMesg);
-                    }
-                });
-
-                broadcaster.addListener((LapMesgListener) lapMesg -> {
-                    Float lapDistance = lapMesg.getTotalDistance();
-                    Float lapTime = lapMesg.getTotalTimerTime();
-
-                    System.out.println("  Lap Metrics:  ");
-                    System.out.println("  Lap Distance: " + lapDistance + " meters");
-                    System.out.println("  Lap Time: " + formatTotalTime(lapTime) + " minutes and seconds");
-                });
-
-                decode.read(inputStream, broadcaster);
-
-            } catch (FitRuntimeException | IOException e) {
-                System.err.println("Error decoding .fit file: " + e.getMessage());
-                e.printStackTrace();
-            }
+        try {
+            File folder = new File("C:\\RunGap\\RunGap\\export");
+            File[] fitFiles = folder.listFiles((dir, name) -> name.toLowerCase().endsWith(".fit"));
+            for (File file : fitFiles) {
+                    TrainingSession session = parseFitFile(file);
+                    System.out.println(session);
+                }
+        } catch (Exception e) {
+            System.err.println("Error parsing FIT file: " + e.getMessage());
         }
     }
 
-    private static void handleSwimming(SessionMesg sessionMesg) {
+    public static TrainingSession parseFitFile(File fitFile) throws Exception {
+        Decode decode = new Decode();
+        MesgBroadcaster broadcaster = new MesgBroadcaster(decode);
+
+        List<LapData> lapDataList = new ArrayList<>();
+        final TrainingSession[] trainingSession = {null};
+
+        broadcaster.addListener((SessionMesgListener) sessionMesg -> {
+            Sport sport = sessionMesg.getSport();
+            DateTime startTime = sessionMesg.getStartTime();
+
+            if (sport == Sport.SWIMMING) {
+                trainingSession[0] = createSwimmingSession(sessionMesg, lapDataList);
+            } else if (sport == Sport.CYCLING) {
+                trainingSession[0] = createCyclingSession(sessionMesg, lapDataList);
+            } else if (sport == Sport.RUNNING) {
+                trainingSession[0] = createRunningSession(sessionMesg, lapDataList);
+            } else if (sport == Sport.TRAINING) {
+                trainingSession[0] = createStrengthTrainingSession(sessionMesg);
+            }
+        });
+
+        broadcaster.addListener((LapMesgListener) lapMesg -> {
+            Float lapDistance = lapMesg.getTotalDistance();
+            Float lapTime = lapMesg.getTotalTimerTime();
+            lapDataList.add(new LapData(lapDistance, lapTime));
+        });
+
+        try (FileInputStream inputStream = new FileInputStream(fitFile)) {
+            decode.read(inputStream, broadcaster);
+        } catch (FitRuntimeException | IOException e) {
+            throw new Exception("Error decoding .fit file: " + e.getMessage(), e);
+        }
+
+        return trainingSession[0];
+    }
+
+    private static TrainingSession createSwimmingSession(SessionMesg sessionMesg, List<LapData> lapDataList) {
+        Sport sport = sessionMesg.getSport();
+        DateTime startTime = sessionMesg.getStartTime();
         Float totalDistance = sessionMesg.getTotalDistance();
         Float totalTime = sessionMesg.getTotalTimerTime();
         float avgTimePer100m = ((totalTime / 60) / totalDistance) * 100;
@@ -66,16 +71,14 @@ public class FitParser {
         Integer avgWatts = sessionMesg.getAvgPower() != null ? sessionMesg.getAvgPower() : 0;
         Integer watts20min = sessionMesg.getThresholdPower() != null ? sessionMesg.getThresholdPower() : 0;
 
-        List<LapData> lapDataList = collectLapData(sessionMesg);
-
-        TrainingSession trainingSession = new TrainingSession(
-                totalDistance, totalTime, avgTimePer100m, averageHeartRate, maxHeartRate, totalCalories, maxSpeed,
+        return new TrainingSession(
+                sport, startTime, totalDistance, totalTime, avgTimePer100m, averageHeartRate, maxHeartRate, totalCalories, maxSpeed,
                 avgSpeed, avgWatts, watts20min, lapDataList);
-
-        System.out.println(trainingSession);
     }
 
-    private static void handleCycling(SessionMesg sessionMesg) {
+    private static TrainingSession createCyclingSession(SessionMesg sessionMesg, List<LapData> lapDataList) {
+        Sport sport = sessionMesg.getSport();
+        DateTime startTime = sessionMesg.getStartTime();
         Float totalDistance = sessionMesg.getTotalDistance();
         Float totalTime = sessionMesg.getTotalTimerTime();
         Float maxSpeed = sessionMesg.getMaxSpeed();
@@ -86,16 +89,12 @@ public class FitParser {
         Short maxHeartRate = sessionMesg.getMaxHeartRate();
         Integer totalCalories = sessionMesg.getTotalCalories();
 
-        List<LapData> lapDataList = collectLapData(sessionMesg);
-
-        TrainingSession trainingSession = new TrainingSession(
-                totalDistance, totalTime, maxSpeed, avgSpeed, avgWatts, watts20min, averageHeartRate, maxHeartRate,
-                totalCalories, lapDataList);
-
-        System.out.println(trainingSession);
+        return new TrainingSession(sport, startTime, totalDistance, totalTime, maxSpeed, avgSpeed, avgWatts, watts20min, averageHeartRate, maxHeartRate, totalCalories, lapDataList);
     }
 
-    private static void handleRunning(SessionMesg sessionMesg) {
+    private static TrainingSession createRunningSession(SessionMesg sessionMesg, List<LapData> lapDataList) {
+        Sport sport = sessionMesg.getSport();
+        DateTime startTime = sessionMesg.getStartTime();
         Float totalDistance = sessionMesg.getTotalDistance();
         Float totalTime = sessionMesg.getTotalTimerTime();
         Short averageHeartRate = sessionMesg.getAvgHeartRate();
@@ -107,26 +106,21 @@ public class FitParser {
         Integer avgWatts = sessionMesg.getAvgPower() != null ? sessionMesg.getAvgPower() : 0;
         Integer watts20min = sessionMesg.getThresholdPower() != null ? sessionMesg.getThresholdPower() : 0;
 
-        List<LapData> lapDataList = collectLapData(sessionMesg);
-
-        TrainingSession trainingSession = new TrainingSession(
-                totalDistance, totalTime, averageHeartRate, maxHeartRate, totalCalories, avgTimePerKm, maxSpeed,
-                avgSpeed, avgWatts, watts20min, lapDataList);
-
-        System.out.println(trainingSession);
+        return new TrainingSession(
+                sport, startTime, totalDistance, totalTime, averageHeartRate, maxHeartRate, totalCalories, avgTimePerKm,
+                maxSpeed, avgSpeed, avgWatts, watts20min, lapDataList);
     }
 
-    private static void handleStrengthTraining(SessionMesg sessionMesg) {
+    private static TrainingSession createStrengthTrainingSession(SessionMesg sessionMesg) {
+        Sport sport = sessionMesg.getSport();
+        DateTime startTime = sessionMesg.getStartTime();
         Float totalTime = sessionMesg.getTotalElapsedTime();
         Short averageHeartRate = sessionMesg.getAvgHeartRate();
         Short maxHeartRate = sessionMesg.getMaxHeartRate();
         Integer totalCalories = sessionMesg.getTotalCalories();
+        Float totalDistance = sessionMesg.getTotalDistance();
 
-        TrainingSession trainingSession = new TrainingSession(
-                totalTime, averageHeartRate, maxHeartRate, totalCalories
-        );
-
-        System.out.println(trainingSession);
+        return new TrainingSession(sport, startTime, totalTime, averageHeartRate, maxHeartRate, totalCalories, totalDistance);
     }
 
     public static String formatTotalTime(float totalSeconds) {
@@ -152,27 +146,4 @@ public class FitParser {
 
         return String.format("%d:%02d", totalMinutes, totalSeconds);
     }
-
-//    private static List<LapData> collectLapData(SessionMesg sessionMesg) {
-//        List<LapData> lapDataList = new ArrayList<>();
-//
-//        // Assuming getTotalTimerTime() is used to calculate the total elapsed time of the activity.
-//        float totalTime = sessionMesg.getTotalTimerTime();
-//        float avgLapTime = sessionMesg.getAvgLapTime();
-//
-//        // We need to calculate the number of laps from the total time and average lap time.
-//        int numLaps = Math.round(totalTime / avgLapTime); // Calculate number of laps
-//
-//        float remainingTime = totalTime;
-//
-//        for (int lapIndex = 0; lapIndex < numLaps; lapIndex++) {
-//            float lapTime = avgLapTime; // All laps have the same average time
-//            float lapDistance = sessionMesg.getTotalDistance() / numLaps; // Assuming even split distance
-//
-//            remainingTime -= lapTime; // Update remaining time for the next lap
-//            lapDataList.add(new LapData(lapDistance, lapTime));
-//        }
-//
-//        return lapDataList;
-//    }
 }
