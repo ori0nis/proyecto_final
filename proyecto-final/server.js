@@ -2,10 +2,6 @@ const jsonServer = require('C:\\Users\\user\\Documents\\GitHub\\proyecto_final\\
 const server = jsonServer.create();
 const router = jsonServer.router("data.json");
 const middlewares = jsonServer.defaults();
-/* const fs = require('fs');
-const path = require('path'); 
-
-const dataFilePath = path.join(__dirname, 'data.json'); */
 
 server.use(middlewares);
 server.use(router);
