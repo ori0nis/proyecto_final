@@ -11,8 +11,12 @@ public class JSON {
     public static void main(String[] args) {
         JSONArray trainingSessionsArray = processFitFiles();
 
+        JSONObject trainingData = new JSONObject();
+        trainingData.put("training-sessions", trainingSessionsArray);
+        System.out.println("JSON Object to write: " + trainingData.toJSONString());
+
         try (FileWriter file = new FileWriter("C:\\Users\\user\\Documents\\Coding projects\\proyecto-final\\data.json")) {
-            file.write(trainingSessionsArray.toJSONString());
+            file.write(trainingData.toJSONString());
             file.flush();
             System.out.println("JSON file created");
         } catch (IOException e) {
