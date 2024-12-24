@@ -1,4 +1,4 @@
-const jsonServer = require('C:\\Users\\user\\Documents\\GitHub\\proyecto_final\\proyecto-final\\node_modules\\json-server');
+const jsonServer = require('C:\\Users\\oihan\\OneDrive\\Documentos\\GitHub\\proyecto_final\\proyecto-final\\node_modules');
 const server = jsonServer.create();
 const router = jsonServer.router("data.json");
 const middlewares = jsonServer.defaults();
