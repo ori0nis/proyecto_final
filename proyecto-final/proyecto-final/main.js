@@ -7,6 +7,6 @@ fetchTrainingData();
 
 dataPoints.insertAdjacentHTML("afterbegin", calendar());
 
-const calendarElement = dataPoints.querySelector("#calendar");
+const calendarElement = document.querySelector("#calendar");
 renderCalendar(calendarElement);
 calendarListeners(calendarElement);
