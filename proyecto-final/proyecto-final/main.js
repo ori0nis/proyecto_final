@@ -1,12 +1,77 @@
-import { fetchTrainingData } from "./src/components/data/fetch";
-import { calendar, renderCalendar, calendarListeners } from "./src/components/calendar/calendar";
+import { renderCalendar, attachDayListeners, displayTrainingData } from "./src/components/calendar/calendar";
+import { button, selectButton } from "./src/components/buttons/button";
 
-const dataPoints = document.querySelector("#data-points");
+const APIURL = "http://localhost:3000/training-sessions";
 
-fetchTrainingData();
+// Nav and buttons:
 
-dataPoints.insertAdjacentHTML("afterbegin", calendar());
+const buttons = document.querySelector("#nav");
 
-const calendarElement = document.querySelector("#calendar");
-renderCalendar(calendarElement);
-calendarListeners(calendarElement);
+    buttons.innerHTML = 
+`
+<ul>
+    <li>${button("swim-button", "./src/public/icons/swim-big.png", 'swim icon')}</li>
+    <li>${button("bike-button", "./src/public/icons/bike.png", 'bike icon')}</li>
+    <li>${button("run-button", "./src/public/icons/run.png", 'run icon')}</li>
+    <li>${button("strength-button", "./src/public/icons/strength.png", 'strength icon')}</li>
+    <li>${selectButton()}</li>
+</ul>`;
+
+renderCalendar();
+attachDayListeners();
+displayTrainingData();
+
+// Functionality of the calendar button:
+
+/* const calendarButton = document.querySelector("#nav > ul > li .calendar-button");
+const calendarContainer = document.querySelector("#calendar-container"); 
+
+calendarButton.addEventListener("click", () => {
+    if (calendarContainer.innerHTML === "") {
+        calendarContainer.innerHTML = calendar();
+        const calendarElement = calendarContainer.querySelector("#calendar");
+        if (calendarElement) {
+            renderCalendar(calendarElement);
+            calendarListeners(calendarElement);
+            attachDayListeners(calendarElement); // Now attaching listeners
+        }
+    } else {
+        calendarContainer.innerHTML = "";
+    }
+}); */
+
+async function fetchSessionData(date) {
+    const response = await fetch(APIURL);
+    const data = await response.json();
+  
+    // Find the session matching the given date
+    const session = data.find(item => {
+    const sessionDate = new Date(item.startTime);
+    const formattedSessionDate = sessionDate.toISOString().split('T')[0];
+    return formattedSessionDate === date;
+    });
+  
+    if (session) {
+      console.log('Session data:', session); // Display session data
+    } else {
+      console.log('No session data found for this date.');
+    }
+  }
+  
+ /*  const calendarElement = calendarContainer.querySelector("#calendar");
+  // Attach event listeners to each calendar button
+  calendarElement.addEventListener('click', (event) => {
+    if (event.target.classList.contains('date-button')) {
+      const selectedDate = event.target.getAttribute('data-date');
+      fetchSessionData(selectedDate);
+    }
+  }); */
+/* const dataPoints = document.querySelector("#data-points"); */
+
+/* fetchTrainingData(); */
+
+/* dataPoints.insertAdjacentHTML("afterbegin", calendar()); */
+
+/* const calendarElement = document.querySelector("#calendar");*/
+/* renderCalendar(calendarElement);
+calendarListeners(calendarElement); */

@@ -1,29 +1,10 @@
 import "./calendar.css";
 
-export const calendar = () => 
-    `
-    <div id="calendar">
-        <header>
-            <h3></h3>
-            <nav>
-                <button id="prev"></button>
-                <button id="next"></button>
-            </nav>
-        </header>
-        <section>
-            <ul class="days">
-                <li>Mon</li>
-                <li>Tue</li>
-                <li>Wed</li>
-                <li>Thu</li>
-                <li>Fri</li>
-                <li>Sat</li>
-                <li>Sun</li>
-            </ul>
-            <ul class="dates"></ul>
-        </section>
-    </div>
-`;
+const APIURL = "http://localhost:3000/training-sessions";
+const header = document.querySelector("h3");
+const dates = document.querySelector(".dates");
+const buttons = document.querySelectorAll("#prev, #next");
+
 
 const months = [
     "January", "February", "March", "April", "May", "June",
@@ -34,11 +15,9 @@ let date = new Date();
 let year = date.getFullYear();
 let month = date.getMonth();
 
-export const renderCalendar = (calendarElement) => {
-    const header = calendarElement.querySelector("h3");
-    const dates = calendarElement.querySelector(".dates");
+export const renderCalendar = () => {
 
-    const start = new Date(year, month, 1).getDay();
+    const start = (new Date(year, month, 1).getDay() + 6) % 7;
     const endDate = new Date(year, month + 1, 0).getDate();
     const endDatePrev = new Date(year, month, 0).getDate();
     const endDay = new Date(year, month, endDate).getDay();
@@ -50,25 +29,26 @@ export const renderCalendar = (calendarElement) => {
     }
 
     for (let i = 1; i <= endDate; i++) {
+        const dateString = new Date(year, month, i).toISOString().split("T")[0];
         let className =
             i === date.getDate() &&
             month === new Date().getMonth() &&
             year === new Date().getFullYear()
                 ? 'class="today"'
                 : '';
-        datesHTML += `<li ${className}>${i}</li>`;
+        datesHTML += `<li ${className}><button class="daybutton" data-date="${dateString}">${i}</button></li>`;
     }
 
-    for (let i = endDay + 1; i <= 6; i++) {
-        datesHTML += `<li class="inactive">${i - endDay}</li>`;
+    const totalDays = start + endDate;
+    const remainingDays = 7 - (totalDays % 7);
+    if (remainingDays < 7) {
+        for (let i = 1; i <= remainingDays; i++) {
+            datesHTML += `<li class="inactive">${i}</li>`;
+        }
     }
 
     dates.innerHTML = datesHTML;
     header.textContent = `${months[month]} ${year}`;
-};
-
-export const calendarListeners = (calendarElement) => {
-    const buttons = calendarElement.querySelectorAll("#prev, #next");
 
     buttons.forEach((button) => {
         button.addEventListener("click", (e) => {
@@ -85,7 +65,55 @@ export const calendarListeners = (calendarElement) => {
             }
 
             date = new Date(year, month, new Date().getDate());
-            renderCalendar(calendarElement);
+            renderCalendar();
         });
     });
 };
+
+// Event listener for the calendar buttons to display the training data of the day:
+
+export const attachDayListeners = () => {
+    const dayButtons = document.querySelectorAll(".daybutton");
+    const trainingDataContainer = document.querySelector("#training-data");
+
+    dayButtons.forEach((button) => {
+        button.addEventListener("click", (e) => {
+            const selectedDate = e.target.getAttribute("data-date");
+            fetch(APIURL)
+                .then((response) => response.json())
+                .then((data) => {
+                    const filteredData = data.filter(
+                        (session) => {
+                        if (!session.startTime) {
+                            return false;
+                        }
+                        return new Date(session.startTime).toISOString().split("T")[0] === selectedDate;
+                    });
+                console.log("Filtered data:", filteredData);
+                displayTrainingData(filteredData);
+            });
+        });
+    });
+};
+
+export const displayTrainingData = (data) => {
+    const container = document.querySelector("#training-data");
+    if (!data) {
+        container.innerHTML = "<p>No training data for this date.</p>";
+    } else {
+        container.innerHTML = data
+        .map(
+            (session) => `
+            <div class="training-entry">
+                <h4>${session.sportType}</h4>
+                <p>Total Time: ${session.totalTime}</p>
+                <p>Total Distance: ${(session.totalDistance / 1000).toFixed(2)} km</p>
+                <p>Calories Burned: ${session.totalCalories}</p>
+                <p>Average Speed: ${session.avgSpeed} km/h</p>
+            </div>
+        `
+            )
+            .join("");
+        }
+    }; 
+

@@ -1,15 +1,19 @@
 #calendar {
     margin: auto;
-    width: 380px;
+    width: 350px;
     padding: 1rem;
     border-radius: 1rem;
-    background-color: red;
+    background-color: rgb(190, 189, 189);
 }
 
 #calendar header {
     display: flex;
     align-items: center;
     justify-content: space-between;
+}
+
+#calendar h3 {
+    font-family: "Roboto";
 }
 
 #calendar ul {
@@ -33,6 +37,7 @@
     position: relative;
     border: none;
     background: transparent;
+    cursor: pointer;
 }
 
 #prev::before, #next::before {
@@ -57,10 +62,16 @@
 
 .days {
     font-weight: 600;
+    font-family: "Roboto";
 }
 
 .dates li.today {
     color: #fff;
+}
+
+.dates li.today .daybutton {
+    color: #fff;
+    background-color: black;
 }
 
 .dates li.today::before {
@@ -77,5 +88,12 @@
 }
 
 .dates li.inactive {
-    color: #ccc;
+    color: rgb(182, 31, 31);
+    font-family: "Roboto";
+    font-size: 12px;
+}
+
+.daybutton {
+    border: none;
+    cursor: pointer;
 }

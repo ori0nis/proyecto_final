@@ -1,10 +1,17 @@
 const APIURL = "http://localhost:3000/training-sessions";
 
-const totalCalories = document.querySelector(".total-calories");
-const maxSpeed = document.querySelector(".max-speed");
-const avgTimePerKm = document.querySelector(".avg-km");
+/* export const fetchByDate = () => {
+    fetch(APIURL)
+    .then((res) => res.json())
+    .then((trainingSessions) => {
+        const session = trainingSessions.find(
+            trainingSession => trainingSession.startTime === 
+        )
+    })
+} */   
 
-export const fetchTrainingData = () => {
+
+/* export const fetchTrainingData = () => {
     fetch(APIURL)
         .then((res) => res.json())
         .then((trainingSessions) => {
@@ -19,4 +26,5 @@ export const fetchTrainingData = () => {
             `;
         })
         .catch(err => console.error("Error fetching data:", err));
-};
+}; */
+
