@@ -1,4 +1,4 @@
-import { renderCalendar, attachDayListeners, displayTrainingData } from "./src/components/calendar/calendar";
+import { renderCalendar, attachDayListeners, calendarButtons, displayTrainingData } from "./src/components/calendar/calendar";
 import { button, selectButton } from "./src/components/buttons/button";
 
 const APIURL = "http://localhost:3000/training-sessions";
@@ -19,6 +19,7 @@ const buttons = document.querySelector("#nav");
 
 renderCalendar();
 attachDayListeners();
+calendarButtons();
 displayTrainingData();
 
 // Functionality of the calendar button:

@@ -49,7 +49,9 @@ export const renderCalendar = () => {
 
     dates.innerHTML = datesHTML;
     header.textContent = `${months[month]} ${year}`;
+};
 
+export const calendarButtons = () => {
     buttons.forEach((button) => {
         button.addEventListener("click", (e) => {
             const btnId = e.target.id;
@@ -68,13 +70,13 @@ export const renderCalendar = () => {
             renderCalendar();
         });
     });
-};
+}
 
 // Event listener for the calendar buttons to display the training data of the day:
 
 export const attachDayListeners = () => {
     const dayButtons = document.querySelectorAll(".daybutton");
-    const trainingDataContainer = document.querySelector("#training-data");
+    /* const trainingDataContainer = document.querySelector("#training-data"); */
 
     dayButtons.forEach((button) => {
         button.addEventListener("click", (e) => {
