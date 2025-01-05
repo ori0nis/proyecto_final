@@ -1,5 +1,9 @@
 import { renderCalendar, attachDayListeners, calendarButtons, displayTrainingData } from "./src/components/calendar/calendar";
 import { button, selectButton } from "./src/components/buttons/button";
+import { parseDate } from "./src/components/data/date-parsing";
+import { fetchByDate } from "./src/components/data/fetch";
+
+fetchByDate();
 
 const APIURL = "http://localhost:3000/training-sessions";
 
@@ -7,7 +11,7 @@ const APIURL = "http://localhost:3000/training-sessions";
 
 const buttons = document.querySelector("#nav");
 
-    buttons.innerHTML = 
+buttons.innerHTML = 
 `
 <ul>
     <li>${button("swim-button", "./src/public/icons/swim-big.png", 'swim icon')}</li>

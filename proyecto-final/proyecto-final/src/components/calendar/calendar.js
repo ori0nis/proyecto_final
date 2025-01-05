@@ -1,4 +1,5 @@
 import "./calendar.css";
+import { parseDate } from "../data/date-parsing";
 
 const APIURL = "http://localhost:3000/training-sessions";
 const header = document.querySelector("h3");
@@ -29,7 +30,7 @@ export const renderCalendar = () => {
     }
 
     for (let i = 1; i <= endDate; i++) {
-        const dateString = new Date(year, month, i).toISOString().split("T")[0];
+        const dateString = (new Date(year, month, i)).toISOString().split("T")[0];
         let className =
             i === date.getDate() &&
             month === new Date().getMonth() &&

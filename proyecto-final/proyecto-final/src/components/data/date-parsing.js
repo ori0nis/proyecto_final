@@ -11,10 +11,14 @@ const isoDate = convertToISO("Thu Jan 13 12:25:28 CET 2022");
 console.log(isoDate);
 console.log("Hello") */
 
-//! REMEMBER TO INPUT THIS IN MAIN
-
 import { parse } from "date-fns";
 
-const dateString = "Thu Jan 13 12:25:28 CET 2022";
-const parsedDate = parse(dateString, "EEE MMM dd HH:mm:ss 'CET' yyyy", new Date());
-console.log(parsedDate.toISOString());
+export const parseDate = (dateString) => {
+    if (dateString) {
+        const timeZone = dateString.includes('CET') ? 'CET' : 'CEST';
+        const parsedDate = parse(dateString, `EEE MMM dd HH:mm:ss '${timeZone}' yyyy`, new Date());
+        return parsedDate.toISOString();
+    } else {
+        return null;
+    }
+};
