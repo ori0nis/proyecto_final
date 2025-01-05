@@ -1,6 +1,8 @@
 import "./calendar.css";
 import { parseDate } from "../data/date-parsing";
 
+//! TODO: CONTINUE WITH DATA PARSING IN THE CALENDAR
+
 const APIURL = "http://localhost:3000/training-sessions";
 const header = document.querySelector("h3");
 const dates = document.querySelector(".dates");
