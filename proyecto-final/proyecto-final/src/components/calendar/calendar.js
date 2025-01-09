@@ -75,30 +75,6 @@ export const calendarButtons = () => {
     });
 }
 
-// Event listener for the calendar buttons to display the training data of the day:
-
-export const attachDayListeners = () => {
-    const dayButtons = document.querySelectorAll(".daybutton");
-
-    dayButtons.forEach((button) => {
-        button.addEventListener("click", (e) => {
-            const selectedDate = e.target.getAttribute("data-date");
-            fetch(APIURL)
-                .then((response) => response.json())
-                .then((data) => {
-                    const filteredData = data.filter(
-                        (session) => {
-                        if (!session.startTime) {
-                            return false;
-                        }
-                        return new Date(session.startTime).toISOString().split("T")[0] === selectedDate;
-                    });
-                console.log("Filtered data:", filteredData);
-                displayTrainingData(filteredData);
-            });
-        });
-    });
-};
 
 //! Primitive attempt at displaying data, might have to delete:
 

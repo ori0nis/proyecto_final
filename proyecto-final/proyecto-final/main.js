@@ -1,9 +1,9 @@
-import { renderCalendar, attachDayListeners, calendarButtons, /*displayTrainingData*/ } from "./src/components/calendar/calendar";
+import { renderCalendar, /*attachDayListeners,*/ calendarButtons, /*displayTrainingData*/ } from "./src/components/calendar/calendar";
 import { button, selectButton } from "./src/components/buttons/button";
 import { parseDate } from "./src/components/data/date-parsing";
-import { fetchByDate } from "./src/components/data/fetch";
+import { fetchData, renderTrainingData } from "./src/components/data/fetch";
 
-fetchByDate();
+/* fetchData(); */
 
 const APIURL = "http://localhost:3000/training-sessions";
 
@@ -21,10 +21,52 @@ buttons.innerHTML =
     <li>${selectButton()}</li>
 </ul>`;
 
+//! FIX
+
+// Event listener for the calendar buttons to display the training data of the day:
+
+const attachDayListeners = () => {
+  const dayButtons = document.querySelectorAll(".daybutton");
+
+  dayButtons.forEach((button) => {
+      button.addEventListener("click", (e) => {
+          const selectedDate = e.target.getAttribute("data-date");
+
+          fetchData();
+
+          fetch(APIURL)
+              .then((res) => res.json())
+              .then((trainingSessions) => {
+                  const matchingSessions = trainingSessions.filter(
+                      (session) =>
+                          parseDate(session.startTime).split("T")[0] === selectedDate
+                  );
+                  console.log(matchingSessions);
+
+                  dataContainer.innerHTML = "";
+
+                  if (matchingSessions.length > 0) {
+                      matchingSessions.forEach((session) => {
+                          const formattedSessionDate = parseDate(session.startTime);
+                          renderTrainingData(session, formattedSessionDate);
+                      });
+                  } else {
+                      dataContainer.innerHTML = `<p>No training sessions found for ${selectedDate}</p>`;
+                  }
+              })
+              .catch((error) => {
+                  console.log(`Error fetching sessions: ${error}`);
+                  dataContainer.innerHTML = `<p>Error fetching data for ${selectedDate}</p>`;
+              });
+      });
+  });
+};
+
 renderCalendar();
 attachDayListeners();
 calendarButtons();
 /* displayTrainingData(); */
+
 
 // Functionality of the calendar button:
 
