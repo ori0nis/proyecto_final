@@ -1,4 +1,4 @@
-import { renderCalendar, attachDayListeners, calendarButtons, displayTrainingData } from "./src/components/calendar/calendar";
+import { renderCalendar, attachDayListeners, calendarButtons, /*displayTrainingData*/ } from "./src/components/calendar/calendar";
 import { button, selectButton } from "./src/components/buttons/button";
 import { parseDate } from "./src/components/data/date-parsing";
 import { fetchByDate } from "./src/components/data/fetch";
@@ -24,7 +24,7 @@ buttons.innerHTML =
 renderCalendar();
 attachDayListeners();
 calendarButtons();
-displayTrainingData();
+/* displayTrainingData(); */
 
 // Functionality of the calendar button:
 

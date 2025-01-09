@@ -79,7 +79,6 @@ export const calendarButtons = () => {
 
 export const attachDayListeners = () => {
     const dayButtons = document.querySelectorAll(".daybutton");
-    /* const trainingDataContainer = document.querySelector("#training-data"); */
 
     dayButtons.forEach((button) => {
         button.addEventListener("click", (e) => {
@@ -101,7 +100,9 @@ export const attachDayListeners = () => {
     });
 };
 
-export const displayTrainingData = (data) => {
+//! Primitive attempt at displaying data, might have to delete:
+
+/* export const displayTrainingData = (data) => {
     const container = document.querySelector("#training-data");
     if (!data) {
         container.innerHTML = "<p>No training data for this date.</p>";
@@ -120,5 +121,5 @@ export const displayTrainingData = (data) => {
             )
             .join("");
         }
-    }; 
+    };  */
 
