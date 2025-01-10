@@ -1,9 +1,7 @@
 import "./calendar.css";
 import { parseDate } from "../data/date-parsing";
+import { fetchFromCalendar } from "../data/fetch";
 
-//! TODO: CONTINUE WITH DATA PARSING IN THE CALENDAR
-
-const APIURL = "http://localhost:3000/training-sessions";
 const header = document.querySelector("h3");
 const dates = document.querySelector(".dates");
 const buttons = document.querySelectorAll("#prev, #next");
@@ -18,9 +16,11 @@ let date = new Date();
 let year = date.getFullYear();
 let month = date.getMonth();
 
+
 export const renderCalendar = () => {
 
     const start = (new Date(year, month, 1).getDay() + 6) % 7;
+    /* const start = new Date(year, month, 1).getDay(); */
     const endDate = new Date(year, month + 1, 0).getDate();
     const endDatePrev = new Date(year, month, 0).getDate();
     const endDay = new Date(year, month, endDate).getDay();
@@ -52,9 +52,10 @@ export const renderCalendar = () => {
 
     dates.innerHTML = datesHTML;
     header.textContent = `${months[month]} ${year}`;
+    attachDayListeners();
 };
 
-export const calendarButtons = () => {
+export const calendarMonthButtons = () => {
     buttons.forEach((button) => {
         button.addEventListener("click", (e) => {
             const btnId = e.target.id;
@@ -73,7 +74,17 @@ export const calendarButtons = () => {
             renderCalendar();
         });
     });
-}
+};
+
+const attachDayListeners = () => {
+    const dayButtons = document.querySelectorAll(".daybutton");
+    dayButtons.forEach((dayButton) => {
+        dayButton.addEventListener("click", (e) => {
+            const selectedDate = e.target.getAttribute("data-date");
+            fetchFromCalendar(selectedDate);
+        });
+    });
+};
 
 
 //! Primitive attempt at displaying data, might have to delete:

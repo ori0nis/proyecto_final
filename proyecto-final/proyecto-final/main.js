@@ -1,11 +1,14 @@
-import { renderCalendar, /*attachDayListeners,*/ calendarButtons, /*displayTrainingData*/ } from "./src/components/calendar/calendar";
+import { renderCalendar, /*attachDayListeners,*/ calendarMonthButtons, /*displayTrainingData*/ } from "./src/components/calendar/calendar";
 import { button, selectButton } from "./src/components/buttons/button";
 import { parseDate } from "./src/components/data/date-parsing";
-import { fetchData, renderTrainingData } from "./src/components/data/fetch";
+import { fetchData, fetchFromCalendar, renderTrainingData } from "./src/components/data/fetch";
 
-/* fetchData(); */
+fetchData();
+renderCalendar();
+/* attachDayListeners(); */
+calendarMonthButtons();
+fetchFromCalendar();
 
-const APIURL = "http://localhost:3000/training-sessions";
 
 // Nav and buttons:
 
@@ -25,7 +28,7 @@ buttons.innerHTML =
 
 // Event listener for the calendar buttons to display the training data of the day:
 
-const attachDayListeners = () => {
+/* const attachDayListeners = () => {
   const dayButtons = document.querySelectorAll(".daybutton");
 
   dayButtons.forEach((button) => {
@@ -61,12 +64,7 @@ const attachDayListeners = () => {
       });
   });
 };
-
-renderCalendar();
-attachDayListeners();
-calendarButtons();
-/* displayTrainingData(); */
-
+ */
 
 // Functionality of the calendar button:
 

@@ -1,4 +1,6 @@
 import { parseDate } from "./date-parsing";
+import { renderCalendar, calendarMonthButtons } from "../calendar/calendar";
+import { parse } from "date-fns";
 
 const APIURL = "http://localhost:3000/training-sessions";
 const dataContainer = document.querySelector("#training-data");
@@ -13,8 +15,27 @@ export const fetchData = () => {
                 renderTrainingData(session, formattedSessionDate);
             });
         })
-    } catch (error) {
-        console.log("Error fetching session" + error);
+    } catch(error) {
+        console.log("Error fetching data " + error);
+    }
+};
+
+export const fetchFromCalendar = (selectedDate) => {
+    try {
+    fetch(APIURL)
+        .then((res) => res.json())
+        .then((trainingSessions) => {
+            const matchingSessions = trainingSessions.filter((session) =>
+                parseDate(session.startTime).split("T")[0] === selectedDate
+            );
+            if (matchingSessions) {
+                renderTrainingData(matchingSessions[0], parseDate(matchingSessions[0].startTime));
+            } else {
+                dataContainer.innerHTML = `<p>No training sessions on this date.</p>`;
+            }
+        })
+    } catch(error) {
+        console.log("Error fetching data: " + error);
     }
 };
 
