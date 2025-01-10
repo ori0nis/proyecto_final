@@ -1,6 +1,4 @@
 import { parseDate } from "./date-parsing";
-import { renderCalendar, calendarMonthButtons } from "../calendar/calendar";
-import { parse } from "date-fns";
 
 const APIURL = "http://localhost:3000/training-sessions";
 const dataContainer = document.querySelector("#training-data");
