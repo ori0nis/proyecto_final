@@ -52,3 +52,9 @@ h1 {
     position: absolute;
     left: 8%;
 }
+
+#training-data {
+    margin: 0 auto;
+    padding-top: 4rem;
+    max-width: 60%;
+}

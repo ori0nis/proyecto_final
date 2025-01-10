@@ -28,8 +28,14 @@ export const fetchFromCalendar = (selectedDate) => {
             const matchingSessions = trainingSessions.filter((session) =>
                 parseDate(session.startTime).split("T")[0] === selectedDate
             );
-            if (matchingSessions) {
+
+            dataContainer.innerHTML = '';
+
+            if (matchingSessions.length <= 1) {
                 renderTrainingData(matchingSessions[0], parseDate(matchingSessions[0].startTime));
+            } else if (matchingSessions.length > 1){
+                matchingSessions.forEach((matchingSession) => 
+                renderTrainingData(matchingSession, parseDate(matchingSession.startTime)))
             } else {
                 dataContainer.innerHTML = `<p>No training sessions on this date.</p>`;
             }
@@ -182,7 +188,7 @@ export const renderTrainingData = (session, formattedSessionDate) => {
             data = `<p>Unknown sport type: ${session.sportType}</p>`;
     }
 
-    dataContainer.innerHTML = data;
+    dataContainer.innerHTML += data;
 };
 
 /*

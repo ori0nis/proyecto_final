@@ -3,12 +3,15 @@ import { button, selectButton } from "./src/components/buttons/button";
 import { parseDate } from "./src/components/data/date-parsing";
 import { fetchData, fetchFromCalendar, renderTrainingData } from "./src/components/data/fetch";
 
-fetchData();
+/* fetchData(); */
 renderCalendar();
 /* attachDayListeners(); */
 calendarMonthButtons();
-fetchFromCalendar();
+/* fetchFromCalendar(); */
 
+//! IDEA: 
+//! If calendar is clicked, data-training acquires a class (calendar-data) which formats the data in cards. 
+//! If buttons are clicked and data-training includes the calendar-data class, it is removed and another class (sport-data) is added to format data as a list.
 
 // Nav and buttons:
 
@@ -25,8 +28,6 @@ buttons.innerHTML =
 </ul>`;
 
 //! FIX
-
-// Event listener for the calendar buttons to display the training data of the day:
 
 /* const attachDayListeners = () => {
   const dayButtons = document.querySelectorAll(".daybutton");
@@ -84,24 +85,6 @@ calendarButton.addEventListener("click", () => {
         calendarContainer.innerHTML = "";
     }
 }); */
-
-async function fetchSessionData(date) {
-    const response = await fetch(APIURL);
-    const data = await response.json();
-  
-    // Find the session matching the given date
-    const session = data.find(item => {
-    const sessionDate = new Date(item.startTime);
-    const formattedSessionDate = sessionDate.toISOString().split('T')[0];
-    return formattedSessionDate === date;
-    });
-  
-    if (session) {
-      console.log('Session data:', session); // Display session data
-    } else {
-      console.log('No session data found for this date.');
-    }
-  }
   
  /*  const calendarElement = calendarContainer.querySelector("#calendar");
   // Attach event listeners to each calendar button

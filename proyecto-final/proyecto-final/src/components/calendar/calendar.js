@@ -32,7 +32,7 @@ export const renderCalendar = () => {
     }
 
     for (let i = 1; i <= endDate; i++) {
-        const dateString = (new Date(year, month, i)).toISOString().split("T")[0];
+        const dateString = new Date(year, month, i).toLocaleDateString("en-CA"); // es-ES locale doesn't seem to work
         let className =
             i === date.getDate() &&
             month === new Date().getMonth() &&
