@@ -5,6 +5,7 @@ import { fetchFromCalendar } from "../data/fetch";
 const header = document.querySelector("h3");
 const dates = document.querySelector(".dates");
 const buttons = document.querySelectorAll("#prev, #next");
+const dataContainer = document.querySelector("#training-data");
 
 
 const months = [
@@ -20,7 +21,6 @@ let month = date.getMonth();
 export const renderCalendar = () => {
 
     const start = (new Date(year, month, 1).getDay() + 6) % 7;
-    /* const start = new Date(year, month, 1).getDay(); */
     const endDate = new Date(year, month + 1, 0).getDate();
     const endDatePrev = new Date(year, month, 0).getDate();
     const endDay = new Date(year, month, endDate).getDay();
@@ -86,27 +86,4 @@ const attachDayListeners = () => {
     });
 };
 
-
-//! Primitive attempt at displaying data, might have to delete:
-
-/* export const displayTrainingData = (data) => {
-    const container = document.querySelector("#training-data");
-    if (!data) {
-        container.innerHTML = "<p>No training data for this date.</p>";
-    } else {
-        container.innerHTML = data
-        .map(
-            (session) => `
-            <div class="training-entry">
-                <h4>${session.sportType}</h4>
-                <p>Total Time: ${session.totalTime}</p>
-                <p>Total Distance: ${(session.totalDistance / 1000).toFixed(2)} km</p>
-                <p>Calories Burned: ${session.totalCalories}</p>
-                <p>Average Speed: ${session.avgSpeed} km/h</p>
-            </div>
-        `
-            )
-            .join("");
-        }
-    };  */
 

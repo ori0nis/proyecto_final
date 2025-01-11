@@ -1,7 +1,10 @@
 import { parseDate } from "./date-parsing";
+import { button, selectButton } from "../buttons/button.js";
 
 const APIURL = "http://localhost:3000/training-sessions";
 const dataContainer = document.querySelector("#training-data");
+
+// Regular fetch
 
 export const fetchData = () => {
     try {
@@ -18,7 +21,69 @@ export const fetchData = () => {
     }
 };
 
+// Fetch by sport
+
+export const fetchBySport = (sportType) => {
+
+    const currentDate = new Date();
+
+    const sixMonthsAgo = new Date();
+    sixMonthsAgo.setMonth(currentDate.getMonth() - 6);
+
+    try {
+        fetch(APIURL)
+        .then((res) => res.json())
+        .then((trainingSessions) => {
+            const sessionsBySport = trainingSessions.filter(session => {
+                const sessionDate = parseDate(session.startTime);
+                const trainingDate = new Date(sessionDate);
+                return session.sportType === sportType && trainingDate >= sixMonthsAgo;
+            });
+
+            dataContainer.innerHTML = '';
+
+            sessionsBySport.forEach((sessionBySport) => {
+                if(sessionBySport.sportType === "SWIMMING" || sessionBySport.sportType === "CYCLING" || sessionBySport.sportType === "RUNNING") {
+                    const laps = sessionBySport.laps
+                    .map((lap, index) => `<li>Lap ${index + 1}: Time = ${lap.lapTime}, Distance = ${lap.lapDistance}</li>`)
+                    .join('');
+
+                    renderTrainingData(sessionBySport, parseDate(sessionBySport.startTime), laps);
+                } else if(sessionBySport.sportType === "TRAINING") {
+                    renderTrainingData(sessionBySport, parseDate(sessionBySport.startTime));
+                }
+            })
+        })
+    } catch (error) {
+        console.log("Error fetching data: " + error);
+    }
+};
+
+// Fetch everything by month
+
+//TODO: CONTINUE HERE
+
+export const fetchByMonth = () => {
+
+    const currentDate = new Date();
+
+    const oneMonthAgo = new Date();
+    oneMonthAgo.setDay(currentDate.getDay() - 31);
+
+    fetch(APIURL)
+    .then((res) => res.json())
+    .then((trainingSessions) => {
+        const sessionsByMonth = trainingSessions.filter(session => {
+            const sessionDate = parseDate(session.startTime);
+            const trainingDate = new Date(sessionDate);
+            /* return trainingDate >= oneMonthAgo; */
+        });
+    })
+}
+
 export const fetchFromCalendar = (selectedDate) => {
+    if(!selectedDate) return;
+
     try {
     fetch(APIURL)
         .then((res) => res.json())
@@ -29,21 +94,36 @@ export const fetchFromCalendar = (selectedDate) => {
 
             dataContainer.innerHTML = '';
 
-            if (matchingSessions.length <= 1) {
-                renderTrainingData(matchingSessions[0], parseDate(matchingSessions[0].startTime));
-            } else if (matchingSessions.length > 1){
-                matchingSessions.forEach((matchingSession) => 
-                renderTrainingData(matchingSession, parseDate(matchingSession.startTime)))
+            if (matchingSessions.length === 1) {
+                const laps = matchingSessions[0].laps
+                    // Can't make certain lap lists show even with this:
+                    /* .filter(lap => lap.lapTime !== "00:00:00" || lap.lapTime !== "00:00:01") */
+                    .map((lap, index) => `<li>Lap ${index + 1}: Time = ${lap.lapTime}, Distance = ${lap.lapDistance}</li>`)
+                    .join('');
+                
+                    renderTrainingData(matchingSessions[0], parseDate(matchingSessions[0].startTime, laps));
+            } else if (matchingSessions.length > 1) {
+                matchingSessions.forEach((matchingSession) => {
+                    const laps = matchingSession.laps
+                        // Can't make certain lap lists show even with this:
+                        /* .filter(lap => lap.lapTime !== "00:00:00" || lap.lapTime !== "00:00:01") */
+                        .map((lap, index) => `<li>Lap ${index + 1}: Time = ${lap.lapTime}, Distance = ${lap.lapDistance}</li>`)
+                        .join('');
+
+                    renderTrainingData(matchingSession, parseDate(matchingSession.startTime), laps);
+                });
             } else {
                 dataContainer.innerHTML = `<p>No training sessions on this date.</p>`;
             }
-        })
+        });
     } catch(error) {
         console.log("Error fetching data: " + error);
     }
 };
 
-export const renderTrainingData = (session, formattedSessionDate) => {
+//! Might have to refactor this to create session cards later
+
+export const renderTrainingData = (session, formattedSessionDate, laps) => {
     let data = '';
 
     switch (session.sportType) {
@@ -73,9 +153,6 @@ export const renderTrainingData = (session, formattedSessionDate) => {
                     </div>
                     <div class="total-calories">
                         <p>Total Calories: ${session.totalCalories}</p>
-                    </div>
-                    <div class="lap-list">
-                        <p>Laps: ${session.laps}</p> 
                     </div>
                 </div>`;
             break;
@@ -116,9 +193,6 @@ export const renderTrainingData = (session, formattedSessionDate) => {
                     <div class="total-calories">
                         <p>Total Calories: ${session.totalCalories}</p>
                     </div>
-                    <div class="lap-list">
-                        <p>Laps: ${session.laps}</p> 
-                    </div>
                 </div>`;
             break;
 
@@ -153,7 +227,10 @@ export const renderTrainingData = (session, formattedSessionDate) => {
                         <p>Total Calories: ${session.totalCalories}</p>
                     </div>
                     <div class="lap-list">
-                        <p>Laps: ${session.laps}</p> 
+                        <p>Laps:</p>
+                        <ul>
+                            ${laps}
+                        </ul>
                     </div>
                 </div>`;
             break;
