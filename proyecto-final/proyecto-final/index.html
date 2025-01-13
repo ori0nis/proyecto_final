@@ -12,7 +12,7 @@
         <div id="app">
             <nav id="nav"></nav>
             <div id="calendar-container">
-        <div id="calendar">
+                <div id="calendar">
             <header>
                 <h3></h3>
                 <nav>
@@ -32,7 +32,36 @@
                 </ul>
                 <ul class="dates"></ul>
             </section>
-        </div>
+                </div>
+            </div>
+            <div id="reset-button">
+                <button type="button">Reset</button>
+            </div>
+            <div id="month-year-selector">
+                <p>Select a month and a year to display training data:</p>
+                <form>
+                    <select name="year" id="year" required>
+                        <option value="2022">2022</option>
+                        <option value="2023">2023</option>
+                        <option value="2024">2024</option>
+                        <option value="2025">2025</option>
+                    </select>
+                    <select name="month" id="month" required>
+                        <option value="january">January</option>
+                        <option value="february">February</option>
+                        <option value="march">March</option>
+                        <option value="april">April</option>
+                        <option value="may">May</option>
+                        <option value="june">June</option>
+                        <option value="july">July</option>
+                        <option value="august">August</option>
+                        <option value="september">September</option>
+                        <option value="october">October</option>
+                        <option value="november">November</option>
+                        <option value="december">December</option>
+                    </select>
+                    <button type="button" class="month-year-selector-button">Next</button>
+                </form>
             </div>
             <div id="training-data">
                 <p>Welcome to the Training Dashboard. Please select an option to view training data.</p>

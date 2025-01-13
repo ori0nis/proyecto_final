@@ -1,9 +1,14 @@
 import { renderCalendar, calendarMonthButtons } from "./src/components/calendar/calendar";
-import { button, selectButton } from "./src/components/buttons/button";
 import { nav } from "./src/components/nav/nav";
-import { fetchFromCalendar, fetchBySport } from "./src/components/data/fetch";
+import { fetchFromCalendar, fetchBySport, fetchByMonth } from "./src/components/data/fetch";
+import { parseDate } from "./src/components/data/date-parsing";
+import { resetButton } from "./src/components/data/resetbutton";
 
-nav()
+nav();
+const trainingData = document.querySelector("#training-data");
+const cleanPage = document.querySelector("#reset-button")
+cleanPage.addEventListener("click", () => resetButton(trainingData));
+
 
 /* fetchData(); */
 renderCalendar();
@@ -11,6 +16,8 @@ renderCalendar();
 calendarMonthButtons();
 fetchFromCalendar();
 fetchBySport();
+fetchByMonth();
+
 
 //! IDEA: 
 //! If calendar is clicked, data-training acquires a class (calendar-data) which formats the data in cards. 

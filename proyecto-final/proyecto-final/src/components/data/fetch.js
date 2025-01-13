@@ -61,25 +61,41 @@ export const fetchBySport = (sportType) => {
 
 // Fetch everything by month
 
-//TODO: CONTINUE HERE
-
-export const fetchByMonth = () => {
-
-    const currentDate = new Date();
+export const fetchByMonth = (selectedYear, selectedMonth) => {
+    /* const currentDate = new Date();
 
     const oneMonthAgo = new Date();
-    oneMonthAgo.setDay(currentDate.getDay() - 31);
+    oneMonthAgo.setDay(currentDate.getDay() - 31); */
 
     fetch(APIURL)
-    .then((res) => res.json())
-    .then((trainingSessions) => {
-        const sessionsByMonth = trainingSessions.filter(session => {
-            const sessionDate = parseDate(session.startTime);
-            const trainingDate = new Date(sessionDate);
-            /* return trainingDate >= oneMonthAgo; */
-        });
-    })
-}
+        .then((res) => res.json())
+        .then((trainingSessions) => {
+            const sessionsByMonth = trainingSessions.filter((session) => {
+                const sessionDate = parseDate(session.startTime);
+                const partsOfDate = sessionDate.split("-");
+                const yearOfSession = partsOfDate[0];
+                const monthOfSession = partsOfDate[1];
+
+                return yearOfSession === selectedYear && monthOfSession === selectedMonth;
+            });
+
+            if (sessionsByMonth) {
+                sessionsByMonth.forEach((session) => {
+                    const laps = session.laps
+                        // Can't make certain lap lists show even with this:
+                        /* .filter(lap => lap.lapTime !== "00:00:00" || lap.lapTime !== "00:00:01") */
+                        .map(
+                            (lap, index) =>
+                                `<li>Lap ${index + 1}: Time = ${lap.lapTime}, Distance = ${lap.lapDistance}</li>`
+                        )
+                        .join("");
+
+                    renderTrainingData(session, parseDate(session.startTime), laps);
+                });
+            }
+        })
+        .catch((error) => console.error("Error fetching data: ", error));
+};
 
 export const fetchFromCalendar = (selectedDate) => {
     if(!selectedDate) return;
