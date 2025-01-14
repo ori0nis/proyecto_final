@@ -1,5 +1,5 @@
 import { parseDate } from "./date-parsing";
-import { button, selectButton } from "../buttons/button.js";
+import { renderTrainingData } from "../render/render.js";
 
 const APIURL = "http://localhost:3000/training-sessions";
 const dataContainer = document.querySelector("#training-data");
@@ -48,9 +48,9 @@ export const fetchBySport = (sportType) => {
                     .map((lap, index) => `<li>Lap ${index + 1}: Time = ${lap.lapTime}, Distance = ${lap.lapDistance}</li>`)
                     .join('');
 
-                    renderTrainingData(sessionBySport, parseDate(sessionBySport.startTime), laps);
+                    renderTrainingData(sessionBySport, "render-as-list", parseDate(sessionBySport.startTime), laps);
                 } else if(sessionBySport.sportType === "TRAINING") {
-                    renderTrainingData(sessionBySport, parseDate(sessionBySport.startTime));
+                    renderTrainingData(sessionBySport, "render-as-list", parseDate(sessionBySport.startTime));
                 }
             })
         })
@@ -90,12 +90,14 @@ export const fetchByMonth = (selectedYear, selectedMonth) => {
                         )
                         .join("");
 
-                    renderTrainingData(session, parseDate(session.startTime), laps);
+                    renderTrainingData(session, "render-as-list", parseDate(session.startTime), laps);
                 });
             }
         })
         .catch((error) => console.error("Error fetching data: ", error));
 };
+
+// Fetch from the calendar
 
 export const fetchFromCalendar = (selectedDate) => {
     if(!selectedDate) return;
@@ -111,22 +113,33 @@ export const fetchFromCalendar = (selectedDate) => {
             dataContainer.innerHTML = '';
 
             if (matchingSessions.length === 1) {
-                const laps = matchingSessions[0].laps
+
+                const session = matchingSessions[0];
+
+                if(session.sportType !== "TRAINING") {
+                    const laps = matchingSessions[0].laps
                     // Can't make certain lap lists show even with this:
                     /* .filter(lap => lap.lapTime !== "00:00:00" || lap.lapTime !== "00:00:01") */
                     .map((lap, index) => `<li>Lap ${index + 1}: Time = ${lap.lapTime}, Distance = ${lap.lapDistance}</li>`)
                     .join('');
-                
-                    renderTrainingData(matchingSessions[0], parseDate(matchingSessions[0].startTime, laps));
+
+                    renderTrainingData(session, "render-as-cards", parseDate(matchingSessions[0].startTime, laps));
+                } else {
+                    renderTrainingData(session, "render-as-cards", parseDate(session.startTime));
+                }
             } else if (matchingSessions.length > 1) {
                 matchingSessions.forEach((matchingSession) => {
-                    const laps = matchingSession.laps
+                    if(matchingSession.sportType !== "TRAINING") {
+                        const laps = matchingSession.laps
                         // Can't make certain lap lists show even with this:
                         /* .filter(lap => lap.lapTime !== "00:00:00" || lap.lapTime !== "00:00:01") */
                         .map((lap, index) => `<li>Lap ${index + 1}: Time = ${lap.lapTime}, Distance = ${lap.lapDistance}</li>`)
                         .join('');
 
-                    renderTrainingData(matchingSession, parseDate(matchingSession.startTime), laps);
+                        renderTrainingData(matchingSession, "render-as-cards", parseDate(matchingSession.startTime), laps);
+                    } else {
+                        renderTrainingData(matchingSession, "render-as-cards", parseDate(matchingSession.startTime));
+                    } 
                 });
             } else {
                 dataContainer.innerHTML = `<p>No training sessions on this date.</p>`;
@@ -136,171 +149,3 @@ export const fetchFromCalendar = (selectedDate) => {
         console.log("Error fetching data: " + error);
     }
 };
-
-//! Might have to refactor this to create session cards later
-
-export const renderTrainingData = (session, formattedSessionDate, laps) => {
-    let data = '';
-
-    switch (session.sportType) {
-        case "SWIMMING":
-            data = `
-                <div id="session">
-                    <div class="sport-type">
-                        <p>Sport: ${session.sportType}</p>
-                    </div>
-                    <div class="start-time">
-                        <p>Start time: ${formattedSessionDate.split("T")[0]}</p>
-                    </div>
-                    <div class="total-distance">
-                        <p>Distance: ${session.totalDistance}</p>
-                    </div>
-                    <div class="total-time">
-                        <p>Time: ${session.totalTime}</p>
-                    </div>
-                    <div class="avg-time-per-100m">
-                        <p>Avg. time per 100m: ${session.avgTimePer100m}</p>
-                    </div>
-                    <div class="avg-heart-rate">
-                        <p>Avg. heart rate: ${session.averageHeartRate}</p>
-                    </div>
-                    <div class="max-heart-rate">
-                        <p>Max. heart rate: ${session.maxHeartRate}</p>
-                    </div>
-                    <div class="total-calories">
-                        <p>Total Calories: ${session.totalCalories}</p>
-                    </div>
-                </div>`;
-            break;
-
-        case "CYCLING":
-            data = `
-                <div id="session">
-                    <div class="sport-type">
-                        <p>Sport: ${session.sportType}</p>
-                    </div>
-                    <div class="start-time">
-                        <p>Start time: ${formattedSessionDate.split("T")[0]}</p>
-                    </div>
-                    <div class="total-distance">
-                        <p>Distance: ${session.totalDistance}</p>
-                    </div>
-                    <div class="total-time">
-                        <p>Time: ${session.totalTime}</p>
-                    </div>
-                    <div class="max-speed">
-                        <p>Max. speed: ${session.maxSpeed}</p>
-                    </div>
-                    <div class="avg-speed">
-                        <p>Avg. speed: ${session.avgSpeed}</p>
-                    </div>
-                    <div class="avg-watts">
-                        <p>Avg. watts: ${session.avgWatts}</p>
-                    </div>
-                    <div class="watts-20-min">
-                        <p>Watts/20min: ${session.watts20min}</p>
-                    </div>
-                    <div class="avg-heart-rate">
-                        <p>Avg. heart rate: ${session.averageHeartRate}</p>
-                    </div>
-                    <div class="max-heart-rate">
-                        <p>Max. heart rate: ${session.maxHeartRate}</p>
-                    </div>
-                    <div class="total-calories">
-                        <p>Total Calories: ${session.totalCalories}</p>
-                    </div>
-                </div>`;
-            break;
-
-        case "RUNNING":
-            data = `
-                <div id="session">
-                    <div class="sport-type">
-                        <p>Sport: ${session.sportType}</p>
-                    </div>
-                    <div class="start-time">
-                        <p>Start time: ${formattedSessionDate.split("T")[0]}</p>
-                    </div>
-                    <div class="total-distance">
-                        <p>Distance: ${session.totalDistance}</p>
-                    </div>
-                    <div class="total-time">
-                        <p>Time: ${session.totalTime}</p>
-                    </div>
-                    <div class="avg-time-per-km">
-                        <p>Avg. time per km: ${session.avgTimePerKm}</p>
-                    </div>
-                    <div class="avg-watts">
-                        <p>Avg. watts: ${session.avgWatts}</p>
-                    </div>
-                    <div class="avg-heart-rate">
-                        <p>Avg. heart rate: ${session.averageHeartRate}</p>
-                    </div>
-                    <div class="max-heart-rate">
-                        <p>Max. heart rate: ${session.maxHeartRate}</p>
-                    </div>
-                    <div class="total-calories">
-                        <p>Total Calories: ${session.totalCalories}</p>
-                    </div>
-                    <div class="lap-list">
-                        <p>Laps:</p>
-                        <ul>
-                            ${laps}
-                        </ul>
-                    </div>
-                </div>`;
-            break;
-
-        case "TRAINING":
-            data = `
-                <div id="session">
-                    <div class="sport-type">
-                        <p>Sport: ${session.sportType}</p>
-                    </div>
-                    <div class="start-time">
-                        <p>Start time: ${formattedSessionDate.split("T")[0]}</p>
-                    </div>
-                    <div class="total-time">
-                        <p>Time: ${session.totalTime}</p>
-                    </div>
-                    <div class="avg-heart-rate">
-                        <p>Avg. heart rate: ${session.averageHeartRate}</p>
-                    </div>
-                    <div class="max-heart-rate">
-                        <p>Max. heart rate: ${session.maxHeartRate}</p>
-                    </div>
-                    <div class="total-calories">
-                        <p>Total Calories: ${session.totalCalories}</p>
-                    </div>
-                </div>`;
-            break;
-
-        default:
-            data = `<p>Unknown sport type: ${session.sportType}</p>`;
-    }
-
-    dataContainer.innerHTML += data;
-};
-
-/*
-        const ISOdate = parseDate()
-        const session = trainingSessions.find(
-            (trainingSession) => ) */
-
-/* export const fetchTrainingData = () => {
-    fetch(APIURL)
-        .then((res) => res.json())
-        .then((trainingSessions) => {
-            const session = trainingSessions.find(
-                trainingSession => trainingSession.id === "1868"
-            );
-
-            totalCalories.innerHTML = 
-            `
-            <h3>Total Calories:</h3>
-            <p>${session.totalCalories}</p>
-            `;
-        })
-        .catch(err => console.error("Error fetching data:", err));
-}; */
-

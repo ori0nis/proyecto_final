@@ -63,26 +63,3 @@ h1 {
     position: absolute;
     left: 8%;
 }
-
-#training-data {
-    display: flex;
-    justify-content: center;
-    margin: 0 auto;
-    min-width: 100%;
-    min-height: 100%;
-    padding-top: 4rem;
-    max-width: 60%;
-}
-
-#session {
-    width: 350px;
-    height: 450px;
-    margin: 0 auto;
-    border: 1px, solid;
-    padding: 0.8rem;
-    margin: 0 2rem 0 2rem;
-}
-
-.lap-list ul {
-    list-style: none;
-}

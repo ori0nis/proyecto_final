@@ -1,0 +1,67 @@
+#training-data {
+    display: flex;
+    justify-content: center;
+    margin: 0 auto;
+    min-width: 100%;
+    min-height: 100%;
+    padding-top: 3rem;
+    max-width: 60%;
+}
+
+#session {
+    width: 330px;
+    height: 450px;
+    margin: 0 auto;
+    border: 1px, solid;
+    padding: 0.8rem;
+    margin: 0 2rem 0 2rem;
+}
+
+.lap-list ul {
+    list-style: none;
+}
+
+.render-as-cards {
+    font-family: 'Roboto';
+}
+
+.render-as-cards.swim {
+    background-color: rgb(161, 161, 219);
+}
+
+.render-as-cards.swim .start-time span,
+.render-as-cards.swim .total-distance span,
+.render-as-cards.swim .total-time span,
+.render-as-cards.swim .avg-time-per-100m span,
+.render-as-cards.swim .avg-heart-rate span,
+.render-as-cards.swim .max-heart-rate span,
+.render-as-cards.swim .total-calories span {
+    font-weight: bold;
+}
+
+.render-as-cards.bike {
+    background-color: rgb(164, 226, 164);
+}
+
+.render-as-cards.run {
+    background-color: rgb(240, 202, 168);
+}
+
+.render-as-cards.strength {
+    background-color: rgb(240, 116, 116);
+}
+
+.render-as-cards .sport-type {
+    width: 40px;
+    height: 40px;
+}
+
+.render-as-cards .sport-type img {
+    object-fit: contain;
+    width: 100%;
+    height: 100%;
+}
+
+.render-as-cards .run {
+    
+}
