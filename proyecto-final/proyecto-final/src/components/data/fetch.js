@@ -4,22 +4,6 @@ import { renderTrainingData } from "../render/render.js";
 const APIURL = "http://localhost:3000/training-sessions";
 const dataContainer = document.querySelector("#training-data");
 
-// Regular fetch
-
-export const fetchData = () => {
-    try {
-        fetch(APIURL)
-        .then((res) => res.json())
-        .then((trainingSessions) => {
-            trainingSessions.forEach((session) => {
-                const formattedSessionDate = parseDate(session.startTime);
-                renderTrainingData(session, formattedSessionDate);
-            });
-        })
-    } catch(error) {
-        console.log("Error fetching data " + error);
-    }
-};
 
 // Fetch by sport
 
