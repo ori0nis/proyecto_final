@@ -1,20 +1,19 @@
 #training-data {
+    grid-column: 2;
     display: flex;
-    justify-content: center;
+    flex-wrap: wrap; /*maybe needs to be nowrap to not affect list*/
+    gap: 0.3rem;
+    align-items: flex-start;
+    padding-top: 4rem;
+    padding-left: 4rem;
     margin: 0 auto;
-    min-width: 100%;
-    min-height: 100%;
-    padding-top: 3rem;
-    max-width: 60%;
+    width: 100%;
+    max-width: 100%;
 }
 
 #session {
-    width: 330px;
-    height: 450px;
-    margin: 0 auto;
     border: 1px, solid;
     padding: 0.8rem;
-    margin: 0 2rem 0 2rem;
 }
 
 .lap-list ul {
@@ -23,6 +22,7 @@
 
 .render-as-cards {
     font-family: 'Roboto';
+    min-height: 300px;
 }
 
 .render-as-cards.swim {
@@ -62,6 +62,28 @@
     height: 100%;
 }
 
-.render-as-cards .run {
-    
+.render-as-list {
+    display: flex;
+    align-items: center; /* Vertically aligns content */
+    /* padding: 1rem; */
+    border: 1px solid gray;
+    margin-bottom: 1rem;
+    min-height: 10px; /* Short height for list items */
+    max-height: 20px;
+    width: calc(100% - 2rem); /* Takes the full width minus padding */
+    max-width: 100%; /* Ensures no overflow */
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    font-family: 'Roboto';
+    background-color: #f8f8f8; /* Neutral background for list */
+}
+
+.render-as-cards .sport-type {
+    width: 40px;
+    height: 40px;
+}
+
+.render-as-list .sport-type img {
+    object-fit: contain;
+    width: 55%;
+    height: 55%;
 }

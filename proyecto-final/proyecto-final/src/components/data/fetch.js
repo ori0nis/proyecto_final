@@ -62,11 +62,6 @@ export const fetchBySport = (sportType) => {
 // Fetch everything by month
 
 export const fetchByMonth = (selectedYear, selectedMonth) => {
-    /* const currentDate = new Date();
-
-    const oneMonthAgo = new Date();
-    oneMonthAgo.setDay(currentDate.getDay() - 31); */
-
     fetch(APIURL)
         .then((res) => res.json())
         .then((trainingSessions) => {
@@ -79,9 +74,12 @@ export const fetchByMonth = (selectedYear, selectedMonth) => {
                 return yearOfSession === selectedYear && monthOfSession === selectedMonth;
             });
 
+            dataContainer.innerHTML = '';
+
             if (sessionsByMonth) {
                 sessionsByMonth.forEach((session) => {
-                    const laps = session.laps
+                    if(session.sportType !== "TRAINING") {
+                        const laps = session.laps
                         // Can't make certain lap lists show even with this:
                         /* .filter(lap => lap.lapTime !== "00:00:00" || lap.lapTime !== "00:00:01") */
                         .map(
@@ -90,7 +88,10 @@ export const fetchByMonth = (selectedYear, selectedMonth) => {
                         )
                         .join("");
 
-                    renderTrainingData(session, "render-as-list", parseDate(session.startTime), laps);
+                        renderTrainingData(session, "render-as-list", parseDate(session.startTime), laps);
+                    } else {
+                        renderTrainingData(session, "render-as-cards", parseDate(session.startTime));
+                    }                   
                 });
             }
         })

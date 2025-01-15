@@ -13,7 +13,7 @@ export const renderTrainingData = (session, className, formattedSessionDate, lap
                         <img src="./src/public/icons/swim-big.png">
                     </div>
                     <div class="start-time">
-                        <p><span>Start time:</span> ${formattedSessionDate.split("T")[0]}</p>
+                        <p><span>Date:</span> ${formattedSessionDate.split("T")[0]}</p>
                     </div>
                     <div class="total-distance">
                         <p><span>Distance:</span> ${session.totalDistance}</p>
@@ -43,7 +43,7 @@ export const renderTrainingData = (session, className, formattedSessionDate, lap
                         <img src="./src/public/icons/bike.png">
                     </div>
                     <div class="start-time">
-                        <p>Start time: ${formattedSessionDate.split("T")[0]}</p>
+                        <p>Date: ${formattedSessionDate.split("T")[0]}</p>
                     </div>
                     <div class="total-distance">
                         <p>Distance: ${session.totalDistance}</p>
@@ -82,7 +82,7 @@ export const renderTrainingData = (session, className, formattedSessionDate, lap
                         <img src="./src/public/icons/run.png">
                     </div>
                     <div class="start-time">
-                        <p>Start time: ${formattedSessionDate.split("T")[0]}</p>
+                        <p>Date: ${formattedSessionDate.split("T")[0]}</p>
                     </div>
                     <div class="total-distance">
                         <p>Distance: ${session.totalDistance}</p>
@@ -121,7 +121,7 @@ export const renderTrainingData = (session, className, formattedSessionDate, lap
                         <img src="./src/public/icons/strength.png">
                     </div>
                     <div class="start-time">
-                        <p>Start time: ${formattedSessionDate.split("T")[0]}</p>
+                        <p>Date: ${formattedSessionDate.split("T")[0]}</p>
                     </div>
                     <div class="total-time">
                         <p>Time: ${session.totalTime}</p>
