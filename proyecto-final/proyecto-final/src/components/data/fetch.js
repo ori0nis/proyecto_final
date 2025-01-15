@@ -90,7 +90,7 @@ export const fetchByMonth = (selectedYear, selectedMonth) => {
 
                         renderTrainingData(session, "render-as-list", parseDate(session.startTime), laps);
                     } else {
-                        renderTrainingData(session, "render-as-cards", parseDate(session.startTime));
+                        renderTrainingData(session, "render-as-list", parseDate(session.startTime));
                     }                   
                 });
             }

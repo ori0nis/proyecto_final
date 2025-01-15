@@ -1,15 +1,17 @@
 #training-data {
     grid-column: 2;
     display: flex;
-    flex-wrap: wrap; /*maybe needs to be nowrap to not affect list*/
+    flex-direction: column;
     gap: 0.3rem;
     align-items: flex-start;
     padding-top: 4rem;
-    padding-left: 4rem;
-    margin: 0 auto;
-    width: 100%;
-    max-width: 100%;
+    padding-left: 3rem;
+    width: max-content;
+    max-width: none;
+    overflow-x: auto; 
 }
+
+/*! Can't figure out the right code to make .render-as-cards have a flex-direction: row */
 
 #session {
     border: 1px, solid;
@@ -25,30 +27,28 @@
     min-height: 300px;
 }
 
-.render-as-cards.swim {
+.render-as-cards.swim, .render-as-list.swim {
     background-color: rgb(161, 161, 219);
 }
 
-.render-as-cards.swim .start-time span,
-.render-as-cards.swim .total-distance span,
-.render-as-cards.swim .total-time span,
-.render-as-cards.swim .avg-time-per-100m span,
-.render-as-cards.swim .avg-heart-rate span,
-.render-as-cards.swim .max-heart-rate span,
-.render-as-cards.swim .total-calories span {
-    font-weight: bold;
-}
-
-.render-as-cards.bike {
+.render-as-cards.bike, .render-as-list.bike {
     background-color: rgb(164, 226, 164);
 }
 
-.render-as-cards.run {
+.render-as-cards.run, .render-as-list.run {
     background-color: rgb(240, 202, 168);
 }
 
-.render-as-cards.strength {
+.render-as-cards.strength, .render-as-list.strength {
     background-color: rgb(240, 116, 116);
+}
+
+.render-as-cards.swim span, .render-as-cards.bike span, .render-as-cards.run span, .render-as-cards.strength span {
+    font-weight: bold;
+}
+
+.render-as-list.run .lap-list span {
+    padding: 0;
 }
 
 .render-as-cards .sport-type {
@@ -62,28 +62,47 @@
     height: 100%;
 }
 
-.render-as-list {
+.render-as-list.swim,.render-as-list.bike, .render-as-list.strength {
     display: flex;
-    align-items: center; /* Vertically aligns content */
-    /* padding: 1rem; */
+    align-items: center;
     border: 1px solid gray;
+    flex-wrap: wrap;
     margin-bottom: 1rem;
-    min-height: 10px; /* Short height for list items */
-    max-height: 20px;
-    width: calc(100% - 2rem); /* Takes the full width minus padding */
-    max-width: 100%; /* Ensures no overflow */
-    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    overflow-x: visible;
     font-family: 'Roboto';
-    background-color: #f8f8f8; /* Neutral background for list */
 }
 
-.render-as-cards .sport-type {
-    width: 40px;
-    height: 40px;
+.render-as-list.swim span, .render-as-list.bike span, .render-as-list.run span, .render-as-list.strength span {
+    font-weight: bold;
+    padding: 2.7px;
+}
+
+.render-as-cards.run .lap-list span {
+    padding: 0;
+}
+
+.render-as-list.run {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+    overflow-x: visible;
+    font-family: 'Roboto';
+}
+
+.render-as-list .sport-type {
+    width: 30px;
+    height: 30px;
 }
 
 .render-as-list .sport-type img {
     object-fit: contain;
-    width: 55%;
-    height: 55%;
+    width: 100%;
+    height: 100%;
+}
+
+.lap-list {
+    display: block;
+    width: 100%;
 }

@@ -1,6 +1,7 @@
 #calendar {
-    margin: auto;
+    margin-left: auto;
     width: 100%;
+    min-width: 300px;
     max-width: 350px;
     padding: 1rem;
     border-radius: 1rem;
@@ -27,7 +28,7 @@
 
 #calendar ul li {
     width: calc(100% / 7);
-    margin-top: 25px;
+    margin-top: 15px;
     position: relative;
     z-index: 2;
 }

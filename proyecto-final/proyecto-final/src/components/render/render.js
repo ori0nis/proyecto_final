@@ -43,34 +43,34 @@ export const renderTrainingData = (session, className, formattedSessionDate, lap
                         <img src="./src/public/icons/bike.png">
                     </div>
                     <div class="start-time">
-                        <p>Date: ${formattedSessionDate.split("T")[0]}</p>
+                        <p><span>Date:</span> ${formattedSessionDate.split("T")[0]}</p>
                     </div>
                     <div class="total-distance">
-                        <p>Distance: ${session.totalDistance}</p>
+                        <p><span>Distance:</span> ${session.totalDistance}</p>
                     </div>
                     <div class="total-time">
-                        <p>Time: ${session.totalTime}</p>
+                        <p><span>Time:</span> ${session.totalTime}</p>
                     </div>
                     <div class="max-speed">
-                        <p>Max. speed: ${session.maxSpeed}</p>
+                        <p><span>Max. speed:</span> ${session.maxSpeed}</p>
                     </div>
                     <div class="avg-speed">
-                        <p>Avg. speed: ${session.avgSpeed}</p>
+                        <p><span>Avg. speed:</span> ${session.avgSpeed}</p>
                     </div>
                     <div class="avg-watts">
-                        <p>Avg. watts: ${session.avgWatts}</p>
+                        <p><span>Avg. watts:</span> ${session.avgWatts}</p>
                     </div>
                     <div class="watts-20-min">
-                        <p>Watts/20min: ${session.watts20min}</p>
+                        <p><span>Watts/20min:</span> ${session.watts20min}</p>
                     </div>
                     <div class="avg-heart-rate">
-                        <p>Avg. heart rate: ${session.averageHeartRate}</p>
+                        <p><span>Avg. heart rate:</span> ${session.averageHeartRate}</p>
                     </div>
                     <div class="max-heart-rate">
-                        <p>Max. heart rate: ${session.maxHeartRate}</p>
+                        <p><span>Max. heart rate:</span> ${session.maxHeartRate}</p>
                     </div>
                     <div class="total-calories">
-                        <p>Total Calories: ${session.totalCalories}</p>
+                        <p><span>Total Calories:</span> ${session.totalCalories}</p>
                     </div>
                 </div>`;
             break;
@@ -82,31 +82,31 @@ export const renderTrainingData = (session, className, formattedSessionDate, lap
                         <img src="./src/public/icons/run.png">
                     </div>
                     <div class="start-time">
-                        <p>Date: ${formattedSessionDate.split("T")[0]}</p>
+                        <p><span>Date:</span> ${formattedSessionDate.split("T")[0]}</p>
                     </div>
                     <div class="total-distance">
-                        <p>Distance: ${session.totalDistance}</p>
+                        <p><span>Distance:</span> ${session.totalDistance}</p>
                     </div>
                     <div class="total-time">
-                        <p>Time: ${session.totalTime}</p>
+                        <p><span>Time:</span> ${session.totalTime}</p>
                     </div>
                     <div class="avg-time-per-km">
-                        <p>Avg. time per km: ${session.avgTimePerKm}</p>
+                        <p><span>Avg. time per km:</span> ${session.avgTimePerKm}</p>
                     </div>
                     <div class="avg-watts">
-                        <p>Avg. watts: ${session.avgWatts}</p>
+                        <p><span>Avg. watts:</span> ${session.avgWatts}</p>
                     </div>
                     <div class="avg-heart-rate">
-                        <p>Avg. heart rate: ${session.averageHeartRate}</p>
+                        <p><span>Avg. heart rate:</span> ${session.averageHeartRate}</p>
                     </div>
                     <div class="max-heart-rate">
-                        <p>Max. heart rate: ${session.maxHeartRate}</p>
+                        <p><span>Max. heart rate:</span> ${session.maxHeartRate}</p>
                     </div>
                     <div class="total-calories">
-                        <p>Total Calories: ${session.totalCalories}</p>
+                        <p><span>Total Calories:</span> ${session.totalCalories}</p>
                     </div>
                     <div class="lap-list">
-                        <p>Laps:</p>
+                        <p><span>Laps:</span></p>
                         <ul>
                             ${laps}
                         </ul>
@@ -121,19 +121,19 @@ export const renderTrainingData = (session, className, formattedSessionDate, lap
                         <img src="./src/public/icons/strength.png">
                     </div>
                     <div class="start-time">
-                        <p>Date: ${formattedSessionDate.split("T")[0]}</p>
+                        <p><span>Date:</span> ${formattedSessionDate.split("T")[0]}</p>
                     </div>
                     <div class="total-time">
-                        <p>Time: ${session.totalTime}</p>
+                        <p><span>Time:</span> ${session.totalTime}</p>
                     </div>
                     <div class="avg-heart-rate">
-                        <p>Avg. heart rate: ${session.averageHeartRate}</p>
+                        <p><span>Avg. heart rate:</span> ${session.averageHeartRate}</p>
                     </div>
                     <div class="max-heart-rate">
-                        <p>Max. heart rate: ${session.maxHeartRate}</p>
+                        <p><span>Max. heart rate:</span> ${session.maxHeartRate}</p>
                     </div>
                     <div class="total-calories">
-                        <p>Total Calories: ${session.totalCalories}</p>
+                        <p><span>Total Calories:</span> ${session.totalCalories}</p>
                     </div>
                 </div>`;
             break;
