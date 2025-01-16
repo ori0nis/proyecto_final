@@ -9,10 +9,10 @@ export const nav = () => {
     buttons.innerHTML = 
     `
     <ul>
-        <li class="swim-button">${button("swim-button", "./src/public/icons/swim-big.png", 'swim icon')}</li>
-        <li class="bike-button">${button("bike-button", "./src/public/icons/bike.png", 'bike icon')}</li>
-        <li class="run-button">${button("run-button", "./src/public/icons/run.png", 'run icon')}</li>
-        <li class="strength-button">${button("strength-button", "./src/public/icons/strength.png", 'strength icon')}</li>
+        <li class="swim-button">${button("swim-button", "/icons/swim-big.png", 'swim icon')}</li>
+        <li class="bike-button">${button("bike-button", "/icons/bike.png", 'bike icon')}</li>
+        <li class="run-button">${button("run-button", "/icons/run.png", 'run icon')}</li>
+        <li class="strength-button">${button("strength-button", "/icons/strength.png", 'strength icon')}</li>
         <li class="month-button">${selectButton()}</li>
     </ul>`;
 
