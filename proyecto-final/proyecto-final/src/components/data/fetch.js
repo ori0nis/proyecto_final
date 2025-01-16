@@ -1,7 +1,7 @@
 import { parseDate } from "./date-parsing";
 import { renderTrainingData } from "../render/render.js";
 
-const APIURL = "http://localhost:3000/training-sessions";
+const APIURL = "https://training-dashboard-blond.vercel.app/";
 const dataContainer = document.querySelector("#training-data");
 
 
