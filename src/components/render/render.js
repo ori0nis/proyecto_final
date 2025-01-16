@@ -10,7 +10,7 @@ export const renderTrainingData = (session, className, formattedSessionDate, lap
             data = `
                 <div id="session" class="${className} swim">
                     <div class="sport-type">
-                        <img src="./src/public/icons/swim-big.png">
+                        <img src="/icons/swim-big.png">
                     </div>
                     <div class="start-time">
                         <p><span>Date:</span> ${formattedSessionDate.split("T")[0]}</p>
@@ -40,7 +40,7 @@ export const renderTrainingData = (session, className, formattedSessionDate, lap
             data = `
                 <div id="session" class="${className} bike">
                     <div class="sport-type">
-                        <img src="./src/public/icons/bike.png">
+                        <img src="/icons/bike.png">
                     </div>
                     <div class="start-time">
                         <p><span>Date:</span> ${formattedSessionDate.split("T")[0]}</p>
@@ -79,7 +79,7 @@ export const renderTrainingData = (session, className, formattedSessionDate, lap
             data = `
                 <div id="session" class="${className} run">
                     <div class="sport-type">
-                        <img src="./src/public/icons/run.png">
+                        <img src="/icons/run.png">
                     </div>
                     <div class="start-time">
                         <p><span>Date:</span> ${formattedSessionDate.split("T")[0]}</p>
@@ -118,7 +118,7 @@ export const renderTrainingData = (session, className, formattedSessionDate, lap
             data = `
                 <div id="session" class="${className} strength">
                     <div class="sport-type">
-                        <img src="./src/public/icons/strength.png">
+                        <img src="/icons/strength.png">
                     </div>
                     <div class="start-time">
                         <p><span>Date:</span> ${formattedSessionDate.split("T")[0]}</p>
