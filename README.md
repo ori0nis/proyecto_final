@@ -2,7 +2,7 @@
 
 As a triathlete, being able to quickly access the core stats of my sessions is very important. That's why I decided to devote the final project of the first year of my Master's Degree in Fullstack Development to this endeavor.
 
-Here's a summary of how this app was created!
+Here's a summary of how this app was created.
 
 ### 1. Structure of the project
 
