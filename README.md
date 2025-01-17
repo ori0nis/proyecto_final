@@ -12,7 +12,8 @@ These were the steps I followed to build the Training Dashboard:
 2. Downloaded all the files as .fit.
 3. Created a Fit Parser and JSON File Generator using Java and the [Garmin SDK](https://developer.garmin.com/connect-iq/overview/).
 4. Turned the generated JSON file into a json-server REST API-style backend.
-5. Served the JSON data in the frontend using JavaScript.  
+5. Served the JSON data in the frontend using JavaScript.
+6. Deployed the frontend with Vercel [here](https://training-dashboard-ori0nis.vercel.app/).
 
 ### 2. Technologies used
 
