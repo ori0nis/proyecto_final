@@ -34,14 +34,14 @@ This will launch the Vite local server. The data is fetched from the json-server
 
 ## 4. Other considerations
 
-_How does the data get updated?_
+<ins>_How does the data get updated?_</ins>
 
 I am proud to call myself the webmaster of this project! I continuously update the data by parsing it through my Java app and refreshing the backend.
 
-_Is Training Dashboard available on mobile format?_
+<ins>_Is Training Dashboard available on mobile?_</ins>
 
 Training Dashboard is usable on mobile, but not intended for it. The idea is for it to look like an Excel file, but cooler!
 
-_I've got questions about Training Dashboard_
+<ins>_I've got questions about Training Dashboard_</ins>
 
 If you wanna talk about Training Dashboard, don't hesitate to email me!
